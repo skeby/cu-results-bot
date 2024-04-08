@@ -16,18 +16,17 @@ const sendLoadingMessage = async (
     const chatId = message.chat.id;
 
     const loadingInterval = setInterval(() => {
-      loadingIndex++;
-      ctx.telegram.editMessageText(
-        chatId,
-        messageId,
-        null,
-        loading[loadingIndex % loading.length]
-      );
+      const newLoadingIndex = (loadingIndex + 1) % loading.length;
+      if (loading[newLoadingIndex] !== message.text) {
+        loadingIndex = newLoadingIndex;
+        message.text = loading[loadingIndex]; // Update message.text
+        ctx.telegram.editMessageText(chatId, messageId, null, message.text);
+      }
     }, interval);
 
     return { messageId, chatId, loadingInterval };
-  } catch (err) {
-    errorHandler(err, "sendLoadingMessage");
+  } catch (error) {
+    console.error("Failed to send loading message:", error);
   }
 };
 

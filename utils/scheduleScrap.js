@@ -1,5 +1,6 @@
 import cron from "node-cron";
 import bot from "../bot.js";
+import scrape from "../scrape.js";
 
 const scheduleScrape = () => {
   try {
