@@ -17,9 +17,10 @@ const sendLoadingMessage = async (
 
     const loadingInterval = setInterval(() => {
       const newLoadingIndex = (loadingIndex + 1) % loading.length;
-      if (loading[newLoadingIndex] !== message.text) {
+      const newLoadingMessage = loading[newLoadingIndex];
+      if (newLoadingMessage !== message.text) {
         loadingIndex = newLoadingIndex;
-        message.text = loading[loadingIndex]; // Update message.text
+        message.text = newLoadingMessage; // Update message.text
         ctx.telegram.editMessageText(chatId, messageId, null, message.text);
       }
     }, interval);
