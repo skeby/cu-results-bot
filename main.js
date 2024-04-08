@@ -3,6 +3,7 @@ import { message } from "telegraf/filters";
 import scrape from "./scrape.js";
 import sendLoadingMessage from "./utils/sendLoadingMessage.js";
 import scheduleScrape from "./utils/scheduleScrap.js";
+import errorHandler from "./utils/errorHandler.js";
 
 scheduleScrape();
 
@@ -16,15 +17,21 @@ bot.command("start", (ctx) => {
 });
 
 bot.command("scrape", async (ctx) => {
-  const { messageId, chatId, loadingInterval } = await sendLoadingMessage(
-    ctx,
-    "Scraping"
-  );
+  try {
+    const { messageId, chatId, loadingInterval } = await sendLoadingMessage(
+      ctx,
+      "Scraping"
+    );
 
-  const res = await scrape();
-  clearInterval(loadingInterval);
-  if (res) {
-    ctx.telegram.editMessageText(chatId, messageId, null, res.message);
+    const res = await scrape();
+    clearInterval(loadingInterval);
+    if (res) {
+      ctx.telegram.editMessageText(chatId, messageId, null, res.message);
+    } else {
+      ctx.reply("No resonse from scraper");
+    }
+  } catch (err) {
+    errorHandler(err, "Command - scrap");
   }
 });
 
