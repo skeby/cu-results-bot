@@ -20,7 +20,7 @@ bot.command("scrape", async (ctx) => {
     const message = await ctx.reply("Scraping sire...");
 
     const res = await scrape();
-    clearInterval(loadingInterval);
+    // clearInterval(loadingInterval);
     if (res) {
       ctx.telegram.editMessageText(
         ctx.chat.id,
