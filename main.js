@@ -26,9 +26,14 @@ bot.command("scrape", async (ctx) => {
     const res = await scrape();
     clearInterval(loadingInterval);
     if (res) {
-      ctx.telegram.editMessageText(chatId, messageId, null, res.message);
+      ctx.telegram.editMessageText(
+        chatId,
+        messageId,
+        null,
+        res.message + res.panels
+      );
     } else {
-      ctx.reply("No resonse from scraper");
+      ctx.reply("No resonse from scraper " + res.panels);
     }
   } catch (err) {
     errorHandler(err, "Command - scrap");

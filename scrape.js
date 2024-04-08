@@ -11,13 +11,15 @@ const scrape = async () => {
     );
     // Login
     await page
-      .goto("https://cuportal.covenantuniversity.edu.ng/login.php")
+      .goto("https://cuportal.covenantuniversity.edu.ng/login.php", {
+        timeout: 120000,
+      })
       .then(() => console.log("(BOT) Navigated to login page"));
     await page.type("#userid", "21CG029820");
     await page.type("#inputpassword1", "Qwerty107");
     await page.click('input[type="submit"]');
     await page
-      .waitForNavigation({ timeout: 60000 })
+      .waitForNavigation({ timeout: 120000 })
       .then(() => console.log("(BOT) Logged in"));
 
     // Wait for login to complete
@@ -25,7 +27,7 @@ const scrape = async () => {
     await page.waitForSelector("#app13");
     await page.click("#app13");
     await page
-      .waitForNavigation()
+      .waitForNavigation({ timeout: 120000 })
       .then(() => console.log("(BOT) Navigated to page result processing"));
 
     // Scrape tabs
