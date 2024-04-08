@@ -23,7 +23,9 @@ bot.command("scrape", async (ctx) => {
 
   const res = await scrape();
   clearInterval(loadingInterval);
-  ctx.telegram.editMessageText(chatId, messageId, null, res.message);
+  if (res) {
+    ctx.telegram.editMessageText(chatId, messageId, null, res.message);
+  }
 });
 
 bot.on(message("text"), (ctx) => {
