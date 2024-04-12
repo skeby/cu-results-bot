@@ -3,6 +3,7 @@ import { message } from "telegraf/filters";
 import scrape from "./scrape.js";
 import scheduleScrape from "./utils/scheduleScrap.js";
 import errorHandler from "./utils/errorHandler.js";
+import fs from "fs";
 
 scheduleScrape();
 
@@ -17,17 +18,27 @@ bot.command("start", (ctx) => {
 
 bot.command("scrape", async (ctx) => {
   try {
-    const message = await ctx.reply("Scraping sire...");
+    const chatId = ctx.chat.id;
+    const gifPath = "assets/loading.mp4";
+    let animation;
+    let message;
+
+    // Check if the file exists
+    if (fs.existsSync(gifPath)) {
+      // Send the GIF as animation
+      animation = await ctx.replyWithAnimation({ source: gifPath });
+    } else {
+      message = await ctx.reply("Loading...");
+    }
 
     const res = await scrape();
     // clearInterval(loadingInterval);
     if (res) {
-      ctx.telegram.editMessageText(
-        ctx.chat.id,
-        message.message_id,
-        null,
-        res.message + res.panels
+      ctx.telegram.deleteMessage(
+        chatId,
+        animation ? animation.message_id : message.message_id
       );
+      ctx.reply(res.message);
     } else {
       ctx.reply("No resonse from scraper " + res.panels);
     }
@@ -51,6 +62,7 @@ if (process.env.NODE_ENV === "production") {
         domain: process.env.WEBHOOK_DOMAIN,
         port: process.env.WEBHOOK_PORT,
       },
+      dropPendingUpdates: true,
     })
     .then(() =>
       console.log(
