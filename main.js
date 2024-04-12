@@ -34,13 +34,13 @@ bot.command("scrape", async (ctx) => {
     const res = await scrape();
     // clearInterval(loadingInterval);
     if (res) {
-      ctx.telegram.deleteMessage(
+      await ctx.telegram.deleteMessage(
         chatId,
         animation ? animation.message_id : message.message_id
       );
-      ctx.reply(res.message);
+      await ctx.reply(res.message);
     } else {
-      ctx.reply("No resonse from scraper " + res.panels);
+      await ctx.reply("No resonse from scraper " + res.panels);
     }
   } catch (err) {
     errorHandler(err, "Command - scrap");
