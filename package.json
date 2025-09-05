@@ -1,0 +1,24 @@
+{
+  "name": "cu-results-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx puppeteer browsers install chrome && node main.js",
+    "dev": "npx nodemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "node-cron": "^3.0.3",
+    "puppeteer": "^22.12.0",
+    "telegraf": "^4.16.3"
+  }
+}
