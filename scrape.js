@@ -4,6 +4,13 @@ import bot from "./bot.js";
 const scrape = async (loadingMessageId) => {
   try {
     const browser = await puppeteer.launch({
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+      ],
+      headless: true,
       defaultViewport: {
         width: 1024,
         height: 600,
